@@ -1,4 +1,5 @@
 import json
+import sys
 from pathlib import Path
 import urllib.request
 from PIL import Image
@@ -57,7 +58,7 @@ def idx_to_xy(idx):
 
 
 def generate_build_image(build):
-    p_w, p_h = PORTRAIT_WIDTH * 5 + 5, int(PORTRAIT_WIDTH * build['Players'] * 2.5)
+    p_w, p_h = PORTRAIT_WIDTH * 5 + 10, int(PORTRAIT_WIDTH * build['Players'] * 2.5)
     build_img = Image.new('RGBA',
                           (p_w, p_h),
                           (255, 255, 255, 0))
@@ -76,8 +77,10 @@ def generate_build_image(build):
 
 
 if __name__ == '__main__':
-    with open('nidhogg.json', 'r') as fp:
+    if len(sys.argv) < 2:
+        print("USAGE: " + sys.argv[0] + " build.json")
+    with open(sys.argv[1], 'r') as fp:
         build = json.load(fp)
         generate_build_image(build)
-    #with open('nidhogg.json', 'w') as fp:
-    #    json.dump(build, fp, indent=4)
+    # with open('nidhogg.json', 'w') as fp:
+    #     json.dump(build, fp, indent=4)
