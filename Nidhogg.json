@@ -3,23 +3,23 @@
     "Team": [
         [
             {
-                "+RCV": 99,
+                "+RCV": 0,
                 "+ATK": 99,
                 "LATENT": null,
                 "SLV": 0,
                 "ID": 4794,
                 "AWAKE": 9,
-                "+HP": 99,
+                "+HP": 50,
                 "LV": 99
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
+                "+RCV": 0,
+                "+ATK": 0,
                 "LATENT": null,
                 "SLV": 0,
                 "ID": 5098,
                 "AWAKE": 9,
-                "+HP": 99,
+                "+HP": 0,
                 "LV": 99
             },
             {
@@ -101,7 +101,7 @@
                 "LATENT": null,
                 "SLV": 0,
                 "ID": 4691,
-                "AWAKE": 9,
+                "AWAKE": 6,
                 "+HP": 99,
                 "LV": 99
             },
@@ -179,8 +179,6 @@
                 "+RCV": 99,
                 "+ATK": 99,
                 "LATENT": [
-                    7,
-                    7,
                     7,
                     7
                 ],
