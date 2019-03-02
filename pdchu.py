@@ -61,7 +61,6 @@ def generate_build_image(build):
     build_img = Image.new('RGBA',
                           (p_w, p_h),
                           (255, 255, 255, 0))
-    draw = ImageDraw.Draw(build_img, 'RGBA')
     y_offset = 0
     for team in build['Team']:
         for idx, card in enumerate(team):
@@ -69,7 +68,7 @@ def generate_build_image(build):
                 download_portrait(card['ID'])
                 portrait = Image.open(PORTRAIT_DIR + str(card['ID']) + '.png')
                 x, y = idx_to_xy(idx)
-                x_offset = PORTRAIT_WIDTH + (5 if x > 0 else 0)
+                x_offset = 5 if x > 0 else 0
                 build_img.paste(portrait, (x_offset + x * PORTRAIT_WIDTH, y_offset + y * PORTRAIT_WIDTH))
         y_offset += int(PORTRAIT_WIDTH * 2.5)
     build_img.save(build['Name'] + '.png')
