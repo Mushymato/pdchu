@@ -66,11 +66,9 @@ def outline_text(draw, x, y, font, text_color, text):
     draw.text((x, y), text, font=font, fill=text_color)
 
 
-def combine_portrait(card, mode='BASE_CARD'):
+def combine_portrait(card, show_awakes):
     download_portrait(card['ID'])
     portrait = Image.open(PORTRAIT_DIR + str(card['ID']) + '.png')
-    if mode == 'OFF_COLOR_ASSIST':
-        return portrait
     draw = ImageDraw.Draw(portrait)
     # + eggs
     sum_plus = card['+HP'] + card['+ATK'] + card['+RCV']
@@ -89,21 +87,20 @@ def combine_portrait(card, mode='BASE_CARD'):
     # level
     if card['LV'] > 0:
         outline_text(draw, 5, 75, ImageFont.truetype('arialbd.ttf', 20), 'white', 'Lv.{:d}'.format(card['LV']))
-    if mode == 'ON_COLOR_ASSIST':
-        return portrait
-    # awakening
-    if card['AWAKE'] >= 9:
-        awake = Image.open('assets/star.png')
-    else:
-        awake = Image.open('assets/circle.png')
-        draw = ImageDraw.Draw(awake)
-        draw.text((8, 2), str(card['AWAKE']), font=ImageFont.truetype('arialbd.ttf', 25), fill='yellow')
     del draw
-    awake.thumbnail((25, 30), Image.LANCZOS)
-    portrait.paste(awake, (PORTRAIT_WIDTH-awake.size[0]-5, 5), awake)
-    awake.close()
-    if mode == 'BASE_CARD':
-        return portrait
+    if show_awakes:
+        # awakening
+        if card['AWAKE'] >= 9:
+            awake = Image.open('assets/star.png')
+        else:
+            awake = Image.open('assets/circle.png')
+            draw = ImageDraw.Draw(awake)
+            draw.text((8, 2), str(card['AWAKE']), font=ImageFont.truetype('arialbd.ttf', 25), fill='yellow')
+            del draw
+        awake.thumbnail((25, 30), Image.LANCZOS)
+        portrait.paste(awake, (PORTRAIT_WIDTH-awake.size[0]-5, 5), awake)
+        awake.close()
+    return portrait
 
 
 def combine_latents(latents):
@@ -160,7 +157,9 @@ def idx_to_xy(idx):
 
 
 def generate_build_image(build, include_instructions=False):
-    p_w, p_h = PORTRAIT_WIDTH * 5 + PADDING, (PORTRAIT_WIDTH + PADDING) * 3 * build['Players']
+    p_w = PORTRAIT_WIDTH * len(build['Team'][0]) // 2 + PADDING * math.ceil(len(build['Team'][0]) / 10)
+    p_h = (PORTRAIT_WIDTH + PADDING) * 3 * build['Players']
+    include_instructions &= build['Instruction'] is not None
     if include_instructions:
         p_h += len(build['Instruction']) * (PORTRAIT_WIDTH//2 + PADDING)
     build_img = Image.new('RGBA',
@@ -171,10 +170,12 @@ def generate_build_image(build, include_instructions=False):
         has_assist = False
         has_latents = False
         for idx, card in enumerate(team):
+            if idx > 11 or idx > 9 and build['Players'] > 1:
+                break
             if card:
-                portrait = combine_portrait(card)
                 x, y = idx_to_xy(idx)
-                x_offset = PADDING if x > 0 else 0
+                portrait = combine_portrait(card, y % 2 == 1)
+                x_offset = PADDING * math.ceil(x / 4)
                 build_img.paste(portrait, (x_offset + x * PORTRAIT_WIDTH, y_offset + y * PORTRAIT_WIDTH))
                 if y % 2 == 0:
                     has_assist = True
@@ -191,12 +192,12 @@ def generate_build_image(build, include_instructions=False):
 
     if include_instructions:
         draw = ImageDraw.Draw(build_img)
-        font = ImageFont.truetype('arialbd.ttf', 25)
+        font = ImageFont.truetype('arialbd.ttf', 20)
         text_padding = text_center_pad(25, PORTRAIT_WIDTH//2)
         for step in build['Instruction']:
             x_offset = PADDING
             outline_text(draw, x_offset, y_offset + text_padding,
-                         font, 'white', 'F{:d}: P{:d} '.format(step['Floor'], step['Player'] + 1))
+                         font, 'white', 'F{:d}:   P{:d} '.format(step['Floor'], step['Player'] + 1))
             x_offset += PORTRAIT_WIDTH - PADDING
             if step['Active'] is not None:
                 actives_used = [str(build['Team'][idx][ids]['ID'])
@@ -210,13 +211,14 @@ def generate_build_image(build, include_instructions=False):
                 x_offset += PADDING
             outline_text(draw, x_offset, y_offset + text_padding, font, 'white', step['Action'])
             y_offset += PORTRAIT_WIDTH//2
+        del draw
 
     build_img = trim(build_img)
     build_img.show()
 
-    build['Name'] = filename(build['Name'])
-    build_img.save(build['Name'] + '.png')
-    print('Saved ' + build['Name'] + '.png')
+    fname = filename(build['Name'])
+    build_img.save(fname + '.png')
+    print('Saved ' + fname + '.png')
 
 
 if __name__ == '__main__':

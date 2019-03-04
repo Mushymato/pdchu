@@ -1,0 +1,159 @@
+{
+    "Instruction": null,
+    "Name": "SAlter A5",
+    "Players": 1,
+    "Team": [
+        [
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 5005,
+                "LATENT": [
+                    7,
+                    7,
+                    7
+                ],
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 5098,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 3524,
+                "LATENT": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 4396,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 1
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 4635,
+                "LATENT": [
+                    4,
+                    4,
+                    4
+                ],
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 4654,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 1
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 4265,
+                "LATENT": [
+                    7,
+                    7,
+                    7
+                ],
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 5098,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 4833,
+                "LATENT": [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 4396,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 5005,
+                "LATENT": [
+                    7,
+                    7,
+                    7
+                ],
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 5006,
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
+            }
+        ]
+    ]
+}
