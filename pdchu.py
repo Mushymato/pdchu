@@ -5,6 +5,7 @@ import urllib.request
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
+from PIL import ImageChops
 
 PORTRAIT_URL = 'https://f002.backblazeb2.com/file/miru-data/padimages/jp/portrait/'
 PORTRAIT_DIR = './pad-portrait/'
@@ -56,7 +57,7 @@ def download_portrait(monster_no):
 
 
 def outline_text(draw, x, y, font, text_color, text):
-    shadow_color = "black"
+    shadow_color = 'black'
     draw.text((x - 1, y - 1), text, font=font, fill=shadow_color)
     draw.text((x + 1, y - 1), text, font=font, fill=shadow_color)
     draw.text((x - 1, y + 1), text, font=font, fill=shadow_color)
@@ -72,17 +73,17 @@ def combine_portrait(card, mode='BASE_CARD'):
     draw = ImageDraw.Draw(portrait)
     # + eggs
     if 0 < card['+HP'] + card['+ATK'] + card['+RCV'] < 297:
-        font = ImageFont.truetype("arialbd.ttf", 15)
-        outline_text(draw, 5, 5, font, "yellow", "HP+{:d}".format(card['+HP']))
-        outline_text(draw, 5, 20, font, "yellow", "ATK+{:d}".format(card['+ATK']))
-        outline_text(draw, 5, 35, font, "yellow", "RCV+{:d}".format(card['+RCV']))
+        font = ImageFont.truetype('arialbd.ttf', 15)
+        outline_text(draw, 5, 5, font, 'yellow', 'HP+{:d}'.format(card['+HP']))
+        outline_text(draw, 5, 20, font, 'yellow', 'ATK+{:d}'.format(card['+ATK']))
+        outline_text(draw, 5, 35, font, 'yellow', 'RCV+{:d}'.format(card['+RCV']))
     else:
-        font = ImageFont.truetype("arialbd.ttf", 20)
-        outline_text(draw, 5, 5, font, "yellow", "+{:d}".format(card['+HP'] + card['+ATK'] + card['+RCV']))
+        font = ImageFont.truetype('arialbd.ttf', 20)
+        outline_text(draw, 5, 5, font, 'yellow', '+{:d}'.format(card['+HP'] + card['+ATK'] + card['+RCV']))
     if card['SLV'] > 0:
-        outline_text(draw, 5, 60, ImageFont.truetype("arialbd.ttf", 15), "pink", "SLv.{:d}".format(card['SLV']))
+        outline_text(draw, 5, 60, ImageFont.truetype('arialbd.ttf', 15), 'pink', 'SLv.{:d}'.format(card['SLV']))
     # level
-    outline_text(draw, 5, 75, ImageFont.truetype("arialbd.ttf", 20), "white", "Lv.{:d}".format(card['LV']))
+    outline_text(draw, 5, 75, ImageFont.truetype('arialbd.ttf', 20), 'white', 'Lv.{:d}'.format(card['LV']))
     if mode == 'ON_COLOR_ASSIST':
         return portrait
     # awakening
@@ -91,7 +92,7 @@ def combine_portrait(card, mode='BASE_CARD'):
     else:
         awake = Image.open('assets/circle.png')
         draw = ImageDraw.Draw(awake)
-        draw.text((8, 2), str(card['AWAKE']), font=ImageFont.truetype("arialbd.ttf", 25), fill="yellow")
+        draw.text((8, 2), str(card['AWAKE']), font=ImageFont.truetype('arialbd.ttf', 25), fill='yellow')
     del draw
     awake.thumbnail((25, 30), Image.LANCZOS)
     portrait.paste(awake, (PORTRAIT_WIDTH-awake.size[0]-5, 5), awake)
@@ -118,37 +119,103 @@ def combine_latents(latents):
     return latents_bar
 
 
+def generate_instructions(build):
+    output = ''
+    for step in build['Instruction']:
+        output += 'F{:d}: P{:d} '.format(step['Floor'], step['Player'])
+        if step['Active'] is not None:
+            output += ' '.join([str(build['Team'][idx][ids]['ID'])
+                                for idx, side in enumerate(step['Active'])
+                                for ids in side]) + ', '
+        output += step['Action']
+        output += '\n'
+    return output
+
+
+def trim(im):
+    bg = Image.new(im.mode, im.size, (255, 255, 255, 0))
+    diff = ImageChops.difference(im, bg)
+    diff = ImageChops.add(diff, diff, 2.0, -100)
+    bbox = diff.getbbox()
+    if bbox:
+        return im.crop(bbox)
+
+
+def text_center_pad(font_size, line_height):
+    return (line_height - font_size) / 2
+
+
 def idx_to_xy(idx):
         return idx // 2, (idx + 1) % 2
 
 
-def generate_build_image(build):
+def generate_build_image(build, include_instructions=False):
     p_w, p_h = PORTRAIT_WIDTH * 5 + PADDING, int(PORTRAIT_WIDTH * build['Players'] * 3)
+    if include_instructions:
+        p_h += len(build['Instruction']) * PORTRAIT_WIDTH//2
     build_img = Image.new('RGBA',
                           (p_w, p_h),
                           (255, 255, 255, 0))
     y_offset = 0
     for team in build['Team']:
+        has_assist = False
+        has_latents = False
         for idx, card in enumerate(team):
             if card:
                 portrait = combine_portrait(card)
                 x, y = idx_to_xy(idx)
                 x_offset = PADDING if x > 0 else 0
                 build_img.paste(portrait, (x_offset + x * PORTRAIT_WIDTH, y_offset + y * PORTRAIT_WIDTH))
-                if y % 2 == 1:
+                if y % 2 == 0:
+                    has_assist = True
+                elif y % 2 == 1:
                     latents = combine_latents(card['LATENT'])
                     if latents:
+                        has_latents = True
                         build_img.paste(latents, (x_offset + x * PORTRAIT_WIDTH, y_offset + (y + 1) * PORTRAIT_WIDTH))
-        y_offset += int(PORTRAIT_WIDTH * 3)
+        y_offset += PORTRAIT_WIDTH
+        if has_assist:
+            y_offset += PORTRAIT_WIDTH
+        if has_latents:
+            y_offset += PORTRAIT_WIDTH
+        else:
+            y_offset += PADDING * 2
+
+    if include_instructions:
+        draw = ImageDraw.Draw(build_img)
+        font = ImageFont.truetype('arialbd.ttf', 25)
+        text_padding = text_center_pad(25, PORTRAIT_WIDTH//2)
+        for step in build['Instruction']:
+            x_offset = PADDING
+            outline_text(draw, x_offset, y_offset + text_padding,
+                         font, 'white', 'F{:d}: P{:d} '.format(step['Floor'], step['Player']))
+            x_offset += PORTRAIT_WIDTH - PADDING
+            if step['Active'] is not None:
+                actives_used = [str(build['Team'][idx][ids]['ID'])
+                                for idx, side in enumerate(step['Active'])
+                                for ids in side]
+                for card in actives_used:
+                    p_small = Image.open(PORTRAIT_DIR + str(card) + '.png')\
+                        .resize((PORTRAIT_WIDTH//2, PORTRAIT_WIDTH//2), Image.LANCZOS)
+                    build_img.paste(p_small, (x_offset, y_offset))
+                    x_offset += PORTRAIT_WIDTH//2
+            x_offset += PADDING
+            outline_text(draw, x_offset, y_offset + text_padding, font, 'white', step['Action'])
+            y_offset += PORTRAIT_WIDTH//2
+
+    build_img = trim(build_img)
+    build_img.show()
+
     build_img.save(build['Name'] + '.png')
-    print("Saved " + build['Name'] + '.png')
+    print('Saved ' + build['Name'] + '.png')
 
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("USAGE: " + sys.argv[0] + " build.json")
+        print('USAGE: ' + sys.argv[0] + ' build.json [--instructions]')
+    instructions = len(sys.argv) >= 3 and sys.argv[2] == '--instructions'
     with open(sys.argv[1], 'r') as fp:
-        build = json.load(fp)
-        generate_build_image(build)
-    # with open('nidhogg.json', 'w') as fp:
-    #     json.dump(build, fp, indent=4)
+        build_data = json.load(fp)
+        generate_build_image(build_data, instructions)
+    with open(sys.argv[1], 'w') as fp:
+        json.dump(build_data, fp, indent=4, sort_keys=True)

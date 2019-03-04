@@ -1,229 +1,263 @@
 {
+    "Instruction": [
+        {
+            "Action": "SWIPE",
+            "Active": [
+                [
+                    2,
+                    5
+                ],
+                []
+            ],
+            "Floor": 1,
+            "Player": 0
+        },
+        {
+            "Action": "BUTTON",
+            "Active": [
+                [],
+                [
+                    1,
+                    2,
+                    5,
+                    7
+                ]
+            ],
+            "Floor": 2,
+            "Player": 1
+        },
+        {
+            "Action": "SWIPE",
+            "Active": null,
+            "Floor": 3,
+            "Player": 1
+        },
+        {
+            "Action": "SWIPE",
+            "Active": [
+                [
+                    7,
+                    9
+                ],
+                []
+            ],
+            "Floor": 4,
+            "Player": 0
+        },
+        {
+            "Action": "VDP",
+            "Active": [
+                [
+                    0
+                ],
+                [
+                    9
+                ]
+            ],
+            "Floor": 5,
+            "Player": 1
+        }
+    ],
     "Name": "Nidhogg",
+    "Players": 2,
     "Team": [
         [
             {
-                "+RCV": 0,
                 "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
-                "ID": 4794,
-                "AWAKE": 9,
-                "+HP": 50,
-                "LV": 99
-            },
-            {
-                "+RCV": 0,
-                "+ATK": 0,
-                "LATENT": null,
-                "SLV": 0,
-                "ID": 5098,
-                "AWAKE": 9,
-                "+HP": 0,
-                "LV": 99
-            },
-            {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
-                "ID": 4794,
-                "AWAKE": 9,
                 "+HP": 99,
-                "LV": 99
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 4794,
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 5098,
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 4794,
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             null,
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 2129,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 4358,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 4738,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 2691,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 4800,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
-                "ID": 3520,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
                 "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "ID": 3520,
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             }
         ],
         [
             {
-                "+RCV": 99,
                 "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
-                "ID": 4691,
+                "+HP": 99,
+                "+RCV": 99,
                 "AWAKE": 6,
-                "+HP": 99,
-                "LV": 99
+                "ID": 4691,
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 2691,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 5,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 1923,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 5
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 1,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 3338,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 1
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 2129,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 3903,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
                 "ID": 2129,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
-            },
-            {
-                "+RCV": 99,
-                "+ATK": 99,
                 "LATENT": null,
-                "SLV": 0,
-                "ID": 3903,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 3903,
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
+            },
+            {
                 "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 4736,
                 "LATENT": [
                     7,
                     7
                 ],
-                "SLV": 0,
-                "ID": 4736,
-                "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "LV": 99,
+                "SLV": 0
             },
             {
-                "+RCV": 99,
-                "+ATK": 99,
-                "LATENT": null,
-                "SLV": 0,
-                "ID": 3705,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
                 "AWAKE": 9,
-                "+HP": 99,
-                "LV": 99
+                "ID": 3705,
+                "LATENT": null,
+                "LV": 99,
+                "SLV": 0
             }
         ]
-    ],
-    "Instruction": [
-        [
-            2,
-            5,
-            "SWIPE"
-        ],
-        [
-            19,
-            10,
-            13,
-            15,
-            "BUTTON"
-        ],
-        "SWIPE",
-        [
-            7,
-            9,
-            "SWIPE"
-        ],
-        [
-            0,
-            17,
-            "VDP"
-        ]
-    ],
-    "Players": 2
+    ]
 }
