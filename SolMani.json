@@ -1,11 +1,10 @@
 {
     "Instruction": [
         {
-            "Action": "SWIPE",
+            "Action": "match 5 green",
             "Active": [
                 [
-                    2,
-                    5
+                    9
                 ],
                 []
             ],
@@ -13,63 +12,82 @@
             "Player": 0
         },
         {
-            "Action": "GRAVITY",
-            "Active": [
-                [],
-                [
-                    1,
-                    2,
-                    5,
-                    7
-                ]
-            ],
+            "Action": "match 4 green",
+            "Active": null,
             "Floor": 2,
             "Player": 1
         },
         {
-            "Action": "SWIPE",
-            "Active": null,
-            "Floor": 3,
-            "Player": 1
-        },
-        {
-            "Action": "SWIPE",
+            "Action": "match 3 green",
             "Active": [
                 [
-                    7,
-                    9
+                    7
                 ],
                 []
             ],
-            "Floor": 4,
+            "Floor": 3,
             "Player": 0
         },
         {
-            "Action": "VDP",
+            "Action": "gravity",
             "Active": [
+                [],
                 [
+                    6,
+                    9,
                     0
-                ],
+                ]
+            ],
+            "Floor": 4,
+            "Player": 1
+        },
+        {
+            "Action": "save 6 dark",
+            "Active": [
+                [],
                 [
-                    9
+                    3,
+                    5
                 ]
             ],
             "Floor": 5,
             "Player": 1
+        },
+        {
+            "Action": "gravity",
+            "Active": [
+                [
+                    4,
+                    3,
+                    0
+                ],
+                []
+            ],
+            "Floor": 6,
+            "Player": 0
+        },
+        {
+            "Action": "match 6 dark",
+            "Active": null,
+            "Floor": 7,
+            "Player": 0
         }
     ],
-    "Name": "Nidhogg",
+    "Name": "SolMani",
     "Players": 2,
     "Team": [
         [
             {
-                "+ATK": 99,
-                "+HP": 99,
-                "+RCV": 99,
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
                 "AWAKE": 9,
-                "ID": 4794,
-                "LATENT": null,
-                "LV": 99,
+                "ID": 4012,
+                "LATENT": [
+                    0,
+                    0
+                ],
+                "LV": 0,
                 "SLV": 0
             },
             {
@@ -77,30 +95,9 @@
                 "+HP": 0,
                 "+RCV": 0,
                 "AWAKE": 9,
-                "ID": 5098,
+                "ID": 3916,
                 "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            },
-            {
-                "+ATK": 99,
-                "+HP": 99,
-                "+RCV": 99,
-                "AWAKE": 9,
-                "ID": 4794,
-                "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            },
-            null,
-            {
-                "+ATK": 0,
-                "+HP": 0,
-                "+RCV": 0,
-                "AWAKE": 9,
-                "ID": 2129,
-                "LATENT": null,
-                "LV": 99,
+                "LV": 0,
                 "SLV": 0
             },
             {
@@ -108,9 +105,12 @@
                 "+HP": 0,
                 "+RCV": 0,
                 "AWAKE": 9,
-                "ID": 4358,
-                "LATENT": null,
-                "LV": 99,
+                "ID": 1713,
+                "LATENT": [
+                    0,
+                    0
+                ],
+                "LV": 0,
                 "SLV": 0
             },
             {
@@ -118,61 +118,9 @@
                 "+HP": 0,
                 "+RCV": 0,
                 "AWAKE": 9,
-                "ID": 4738,
+                "ID": 3198,
                 "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            },
-            {
-                "+ATK": 0,
-                "+HP": 0,
-                "+RCV": 0,
-                "AWAKE": 9,
-                "ID": 2691,
-                "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            },
-            {
-                "+ATK": 0,
-                "+HP": 0,
-                "+RCV": 0,
-                "AWAKE": 9,
-                "ID": 4800,
-                "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            },
-            {
-                "+ATK": 0,
-                "+HP": 0,
-                "+RCV": 0,
-                "AWAKE": 9,
-                "ID": 3520,
-                "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            }
-        ],
-        [
-            {
-                "+ATK": 99,
-                "+HP": 99,
-                "+RCV": 99,
-                "AWAKE": 6,
-                "ID": 4691,
-                "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            },
-            {
-                "+ATK": 0,
-                "+HP": 0,
-                "+RCV": 0,
-                "AWAKE": 9,
-                "ID": 2691,
-                "LATENT": null,
-                "LV": 99,
+                "LV": 0,
                 "SLV": 0
             },
             {
@@ -182,68 +130,30 @@
                 "AWAKE": 9,
                 "ID": 1923,
                 "LATENT": null,
-                "LV": 99,
-                "SLV": 5
+                "LV": 0,
+                "SLV": 0
             },
             {
                 "+ATK": 0,
                 "+HP": 0,
                 "+RCV": 0,
                 "AWAKE": 9,
-                "ID": 3338,
+                "ID": 3916,
                 "LATENT": null,
-                "LV": 99,
+                "LV": 0,
                 "SLV": 1
-            },
-            {
-                "+ATK": 0,
-                "+HP": 0,
-                "+RCV": 0,
-                "AWAKE": 9,
-                "ID": 2129,
-                "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            },
-            {
-                "+ATK": 0,
-                "+HP": 0,
-                "+RCV": 0,
-                "AWAKE": 9,
-                "ID": 3903,
-                "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            },
-            {
-                "+ATK": 0,
-                "+HP": 0,
-                "+RCV": 0,
-                "AWAKE": 9,
-                "ID": 2129,
-                "LATENT": null,
-                "LV": 99,
-                "SLV": 0
-            },
-            {
-                "+ATK": 0,
-                "+HP": 0,
-                "+RCV": 0,
-                "AWAKE": 9,
-                "ID": 3903,
-                "LATENT": null,
-                "LV": 99,
-                "SLV": 0
             },
             {
                 "+ATK": 99,
                 "+HP": 99,
                 "+RCV": 99,
                 "AWAKE": 9,
-                "ID": 4736,
+                "ID": 4693,
                 "LATENT": [
-                    7,
-                    7
+                    0,
+                    0,
+                    4,
+                    4
                 ],
                 "LV": 99,
                 "SLV": 0
@@ -253,9 +163,133 @@
                 "+HP": 0,
                 "+RCV": 0,
                 "AWAKE": 9,
-                "ID": 3705,
+                "ID": 922,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 3508,
+                "LATENT": [
+                    5,
+                    5,
+                    5
+                ],
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 4317,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            }
+        ],
+        [
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 4012,
+                "LATENT": [
+                    0,
+                    0
+                ],
+                "LV": 0,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 3338,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 1
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 3372,
+                "LATENT": [
+                    5,
+                    5,
+                    5
+                ],
+                "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 4423,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            },
+            {
+                "+ATK": 99,
+                "+HP": 99,
+                "+RCV": 99,
+                "AWAKE": 9,
+                "ID": 3274,
                 "LATENT": null,
                 "LV": 99,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 2668,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 1923,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            },
+            null,
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 2940,
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            },
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": 3198,
+                "LATENT": null,
+                "LV": 0,
                 "SLV": 0
             }
         ]

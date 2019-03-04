@@ -2,6 +2,7 @@ import json
 import sys
 from pathlib import Path
 import urllib.request
+import math
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -72,18 +73,22 @@ def combine_portrait(card, mode='BASE_CARD'):
         return portrait
     draw = ImageDraw.Draw(portrait)
     # + eggs
-    if 0 < card['+HP'] + card['+ATK'] + card['+RCV'] < 297:
-        font = ImageFont.truetype('arialbd.ttf', 15)
-        outline_text(draw, 5, 5, font, 'yellow', 'HP+{:d}'.format(card['+HP']))
-        outline_text(draw, 5, 20, font, 'yellow', 'ATK+{:d}'.format(card['+ATK']))
-        outline_text(draw, 5, 35, font, 'yellow', 'RCV+{:d}'.format(card['+RCV']))
-    else:
-        font = ImageFont.truetype('arialbd.ttf', 20)
-        outline_text(draw, 5, 5, font, 'yellow', '+{:d}'.format(card['+HP'] + card['+ATK'] + card['+RCV']))
+    sum_plus = card['+HP'] + card['+ATK'] + card['+RCV']
+    if 0 < sum_plus:
+        if sum_plus < 297:
+            font = ImageFont.truetype('arialbd.ttf', 15)
+            outline_text(draw, 5, 5, font, 'yellow', 'HP+{:d}'.format(card['+HP']))
+            outline_text(draw, 5, 20, font, 'yellow', 'ATK+{:d}'.format(card['+ATK']))
+            outline_text(draw, 5, 35, font, 'yellow', 'RCV+{:d}'.format(card['+RCV']))
+        else:
+            font = ImageFont.truetype('arialbd.ttf', 20)
+            outline_text(draw, 5, 5, font, 'yellow', '+297')
+    # skill level
     if card['SLV'] > 0:
-        outline_text(draw, 5, 60, ImageFont.truetype('arialbd.ttf', 15), 'pink', 'SLv.{:d}'.format(card['SLV']))
+        outline_text(draw, 5, 60, ImageFont.truetype('arialbd.ttf', 15), 'white', 'SLv.{:d}'.format(card['SLV']))
     # level
-    outline_text(draw, 5, 75, ImageFont.truetype('arialbd.ttf', 20), 'white', 'Lv.{:d}'.format(card['LV']))
+    if card['LV'] > 0:
+        outline_text(draw, 5, 75, ImageFont.truetype('arialbd.ttf', 20), 'white', 'Lv.{:d}'.format(card['LV']))
     if mode == 'ON_COLOR_ASSIST':
         return portrait
     # awakening
@@ -141,8 +146,13 @@ def trim(im):
         return im.crop(bbox)
 
 
+def filename(name):
+    keep_characters = ('.', '_')
+    return "".join(c for c in name if c.isalnum() or c in keep_characters).rstrip()
+
+
 def text_center_pad(font_size, line_height):
-    return (line_height - font_size) / 2
+    return math.floor((line_height - font_size) / 2)
 
 
 def idx_to_xy(idx):
@@ -150,9 +160,9 @@ def idx_to_xy(idx):
 
 
 def generate_build_image(build, include_instructions=False):
-    p_w, p_h = PORTRAIT_WIDTH * 5 + PADDING, int(PORTRAIT_WIDTH * build['Players'] * 3)
+    p_w, p_h = PORTRAIT_WIDTH * 5 + PADDING, (PORTRAIT_WIDTH + PADDING) * 3 * build['Players']
     if include_instructions:
-        p_h += len(build['Instruction']) * PORTRAIT_WIDTH//2
+        p_h += len(build['Instruction']) * (PORTRAIT_WIDTH//2 + PADDING)
     build_img = Image.new('RGBA',
                           (p_w, p_h),
                           (255, 255, 255, 0))
@@ -173,13 +183,11 @@ def generate_build_image(build, include_instructions=False):
                     if latents:
                         has_latents = True
                         build_img.paste(latents, (x_offset + x * PORTRAIT_WIDTH, y_offset + (y + 1) * PORTRAIT_WIDTH))
-        y_offset += PORTRAIT_WIDTH
+        y_offset += PORTRAIT_WIDTH + PADDING
         if has_assist:
             y_offset += PORTRAIT_WIDTH
         if has_latents:
             y_offset += PORTRAIT_WIDTH
-        else:
-            y_offset += PADDING * 2
 
     if include_instructions:
         draw = ImageDraw.Draw(build_img)
@@ -188,7 +196,7 @@ def generate_build_image(build, include_instructions=False):
         for step in build['Instruction']:
             x_offset = PADDING
             outline_text(draw, x_offset, y_offset + text_padding,
-                         font, 'white', 'F{:d}: P{:d} '.format(step['Floor'], step['Player']))
+                         font, 'white', 'F{:d}: P{:d} '.format(step['Floor'], step['Player'] + 1))
             x_offset += PORTRAIT_WIDTH - PADDING
             if step['Active'] is not None:
                 actives_used = [str(build['Team'][idx][ids]['ID'])
@@ -199,13 +207,14 @@ def generate_build_image(build, include_instructions=False):
                         .resize((PORTRAIT_WIDTH//2, PORTRAIT_WIDTH//2), Image.LANCZOS)
                     build_img.paste(p_small, (x_offset, y_offset))
                     x_offset += PORTRAIT_WIDTH//2
-            x_offset += PADDING
+                x_offset += PADDING
             outline_text(draw, x_offset, y_offset + text_padding, font, 'white', step['Action'])
             y_offset += PORTRAIT_WIDTH//2
 
     build_img = trim(build_img)
     build_img.show()
 
+    build['Name'] = filename(build['Name'])
     build_img.save(build['Name'] + '.png')
     print('Saved ' + build['Name'] + '.png')
 
