@@ -158,7 +158,7 @@ def idx_to_xy(idx):
 
 def generate_build_image(build, include_instructions=False):
     p_w = PORTRAIT_WIDTH * len(build['Team'][0]) // 2 + PADDING * math.ceil(len(build['Team'][0]) / 10)
-    p_h = (PORTRAIT_WIDTH + PADDING) * 3 * build['Players']
+    p_h = (PORTRAIT_WIDTH + PADDING) * 3 * len(build['Team'])
     include_instructions &= build['Instruction'] is not None
     if include_instructions:
         p_h += len(build['Instruction']) * (PORTRAIT_WIDTH//2 + PADDING)
@@ -170,7 +170,7 @@ def generate_build_image(build, include_instructions=False):
         has_assist = False
         has_latents = False
         for idx, card in enumerate(team):
-            if idx > 11 or idx > 9 and build['Players'] > 1:
+            if idx > 11 or idx > 9 and len(build['Team']) > 1:
                 break
             if card:
                 x, y = idx_to_xy(idx)
