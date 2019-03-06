@@ -8,6 +8,7 @@ from PIL import ImageDraw
 from PIL import ImageFont
 from PIL import ImageChops
 
+ASSETS_DIR = './assets/'
 PORTRAIT_URL = 'https://f002.backblazeb2.com/file/miru-data/padimages/jp/portrait/'
 PORTRAIT_DIR = './pad-portrait/'
 PORTRAIT_WIDTH = 100
@@ -67,6 +68,8 @@ def outline_text(draw, x, y, font, text_color, text):
 
 
 def combine_portrait(card, show_awakes):
+    if card['ID'] == 'delay_buffer':
+        return Image.open(ASSETS_DIR + 'delay_buffer.png')
     download_portrait(card['ID'])
     portrait = Image.open(PORTRAIT_DIR + str(card['ID']) + '.png')
     draw = ImageDraw.Draw(portrait)
@@ -91,9 +94,9 @@ def combine_portrait(card, show_awakes):
     if show_awakes:
         # awakening
         if card['AWAKE'] >= 9:
-            awake = Image.open('assets/star.png')
+            awake = Image.open(ASSETS_DIR + 'star.png')
         else:
-            awake = Image.open('assets/circle.png')
+            awake = Image.open(ASSETS_DIR + 'circle.png')
             draw = ImageDraw.Draw(awake)
             draw.text((8, 2), str(card['AWAKE']), font=ImageFont.truetype('arialbd.ttf', 25), fill='yellow')
             del draw
@@ -112,7 +115,7 @@ def combine_latents(latents):
     x_offset = 0
     y_offset = 0
     for l in latents:
-        latent_icon = Image.open('assets/' + LATENTS_MAP[l] + '.png')
+        latent_icon = Image.open(ASSETS_DIR + LATENTS_MAP[l] + '.png')
         if x_offset + latent_icon.size[0] >= PORTRAIT_WIDTH:
             x_offset = 0
             y_offset += latent_icon.size[1]

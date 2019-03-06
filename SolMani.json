@@ -271,7 +271,16 @@
                 "LV": 0,
                 "SLV": 0
             },
-            null,
+            {
+                "+ATK": 0,
+                "+HP": 0,
+                "+RCV": 0,
+                "AWAKE": 9,
+                "ID": "delay_buffer",
+                "LATENT": null,
+                "LV": 0,
+                "SLV": 0
+            },
             {
                 "+ATK": 0,
                 "+HP": 0,
