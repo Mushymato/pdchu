@@ -79,18 +79,23 @@ def combine_portrait(card, show_awakes):
     if 0 < sum_plus:
         if sum_plus < 297:
             font = ImageFont.truetype('arialbd.ttf', 15)
-            outline_text(draw, 5, 5, font, 'yellow', 'HP+{:d}'.format(card['+HP']))
-            outline_text(draw, 5, 20, font, 'yellow', 'ATK+{:d}'.format(card['+ATK']))
-            outline_text(draw, 5, 35, font, 'yellow', 'RCV+{:d}'.format(card['+RCV']))
+            outline_text(draw, 5, 5, font, 'yellow', '+{:d} HP'.format(card['+HP']))
+            outline_text(draw, 5, 17, font, 'yellow', '+{:d} ATK'.format(card['+ATK']))
+            outline_text(draw, 5, 29, font, 'yellow', '+{:d} RCV'.format(card['+RCV']))
         else:
             font = ImageFont.truetype('arialbd.ttf', 20)
             outline_text(draw, 5, 5, font, 'yellow', '+297')
-    # skill level
-    if card['SLV'] > 0:
-        outline_text(draw, 5, 60, ImageFont.truetype('arialbd.ttf', 15), 'white', 'SLv.{:d}'.format(card['SLV']))
     # level
+    slv_offset = 80
     if card['LV'] > 0:
         outline_text(draw, 5, 75, ImageFont.truetype('arialbd.ttf', 20), 'white', 'Lv.{:d}'.format(card['LV']))
+        slv_offset = 60
+    # skill level
+    if card['SLV'] > 0:
+        outline_text(draw, 5, slv_offset,
+                     ImageFont.truetype('arialbd.ttf', 15), 'pink', 'SLv.{:d}'.format(card['SLV']))
+    # ID
+    outline_text(draw, 72, 85, ImageFont.truetype('arialbd.ttf', 10), 'lightblue', str(card['ID']))
     del draw
     if show_awakes:
         # awakening
@@ -121,7 +126,6 @@ def combine_latents(latents):
         latent_icon = Image.open(ASSETS_DIR + LATENTS_MAP[l] + '.png')
         if x_offset + latent_icon.size[0] > PORTRAIT_WIDTH:
             x_offset = 0
-            print(latent_icon.size)
             y_offset += last_height
         latents_bar.paste(latent_icon, (x_offset, y_offset))
         last_height = latent_icon.size[1]
@@ -165,8 +169,8 @@ def idx_to_xy(idx):
 
 
 def generate_build_image(build, include_instructions=False):
-    p_w = PORTRAIT_WIDTH * len(build['Team'][0]) // 2 + PADDING * math.ceil(len(build['Team'][0]) / 10)
-    p_h = (PORTRAIT_WIDTH * 2 + LATENTS_WIDTH * 2 + PADDING) * len(build['Team'])
+    p_w = PORTRAIT_WIDTH * math.ceil(len(build['Team'][0]) / 2) + PADDING * math.ceil(len(build['Team'][0]) / 10)
+    p_h = (PORTRAIT_WIDTH + LATENTS_WIDTH + PADDING) * 2 * len(build['Team'])
     include_instructions &= build['Instruction'] is not None
     if include_instructions:
         p_h += len(build['Instruction']) * (PORTRAIT_WIDTH//2 + PADDING)
@@ -192,7 +196,7 @@ def generate_build_image(build, include_instructions=False):
                     if latents:
                         has_latents = True
                         build_img.paste(latents, (x_offset + x * PORTRAIT_WIDTH, y_offset + (y + 1) * PORTRAIT_WIDTH))
-        y_offset += PORTRAIT_WIDTH + PADDING
+        y_offset += PORTRAIT_WIDTH + PADDING * 2
         if has_assist:
             y_offset += PORTRAIT_WIDTH
         if has_latents:
@@ -203,7 +207,7 @@ def generate_build_image(build, include_instructions=False):
         font = ImageFont.truetype('arialbd.ttf', 20)
         text_padding = text_center_pad(25, PORTRAIT_WIDTH//2)
         for step in build['Instruction']:
-            x_offset = PADDING
+            x_offset = 0
             outline_text(draw, x_offset, y_offset + text_padding,
                          font, 'white', 'F{:d}:   P{:d} '.format(step['Floor'], step['Player'] + 1))
             x_offset += PORTRAIT_WIDTH - PADDING
