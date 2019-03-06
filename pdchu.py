@@ -13,6 +13,7 @@ PORTRAIT_URL = 'https://f002.backblazeb2.com/file/miru-data/padimages/jp/portrai
 PORTRAIT_DIR = './pad-portrait/'
 PORTRAIT_WIDTH = 100
 PADDING = 10
+LATENTS_WIDTH = 25
 LATENTS_MAP = {
     0: 'latent_sdr',
     1: 'killer_balanced',
@@ -24,19 +25,19 @@ LATENTS_MAP = {
     7: 'killer_devil',
     8: 'killer_machine',
 
-    9: 'Vendor',
-    10: 'Evo',
-    11: 'Enhance',
-    12: 'Awakening',
-    13: 'HP',
-    14: 'Attack',
-    15: 'RCV',
-    16: 'Autoheal',
-    17: 'Fire Resist',
-    18: 'Water Resist',
-    19: 'Wood Resist',
-    20: 'Light Resist',
-    21: 'Dark Resist',
+    # 9: 'Vendor',
+    # 10: 'Evo',
+    # 11: 'Enhance',
+    # 12: 'Awakening',
+    # 13: 'HP',
+    # 14: 'Attack',
+    # 15: 'RCV',
+    # 16: 'Autoheal',
+    # 17: 'Fire Resist',
+    # 18: 'Water Resist',
+    # 19: 'Wood Resist',
+    # 20: 'Light Resist',
+    # 21: 'Dark Resist',
 }
 
 
@@ -114,12 +115,16 @@ def combine_latents(latents):
                             (255, 255, 255, 0))
     x_offset = 0
     y_offset = 0
+    latents.sort(reverse=True)
+    last_height = 0
     for l in latents:
         latent_icon = Image.open(ASSETS_DIR + LATENTS_MAP[l] + '.png')
-        if x_offset + latent_icon.size[0] >= PORTRAIT_WIDTH:
+        if x_offset + latent_icon.size[0] > PORTRAIT_WIDTH:
             x_offset = 0
-            y_offset += latent_icon.size[1]
+            print(latent_icon.size)
+            y_offset += last_height
         latents_bar.paste(latent_icon, (x_offset, y_offset))
+        last_height = latent_icon.size[1]
         x_offset += latent_icon.size[0]
     return latents_bar
 
@@ -161,7 +166,7 @@ def idx_to_xy(idx):
 
 def generate_build_image(build, include_instructions=False):
     p_w = PORTRAIT_WIDTH * len(build['Team'][0]) // 2 + PADDING * math.ceil(len(build['Team'][0]) / 10)
-    p_h = (PORTRAIT_WIDTH + PADDING) * 3 * len(build['Team'])
+    p_h = (PORTRAIT_WIDTH * 2 + LATENTS_WIDTH * 2 + PADDING) * len(build['Team'])
     include_instructions &= build['Instruction'] is not None
     if include_instructions:
         p_h += len(build['Instruction']) * (PORTRAIT_WIDTH//2 + PADDING)
@@ -191,7 +196,7 @@ def generate_build_image(build, include_instructions=False):
         if has_assist:
             y_offset += PORTRAIT_WIDTH
         if has_latents:
-            y_offset += PORTRAIT_WIDTH
+            y_offset += LATENTS_WIDTH * 2
 
     if include_instructions:
         draw = ImageDraw.Draw(build_img)
@@ -217,7 +222,6 @@ def generate_build_image(build, include_instructions=False):
         del draw
 
     build_img = trim(build_img)
-    build_img.show()
 
     fname = filename(build['Name'])
     build_img.save(fname + '.png')
