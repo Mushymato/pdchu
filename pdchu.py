@@ -39,6 +39,8 @@ LATENTS_MAP = {
     # 20: 'Light Resist',
     # 21: 'Dark Resist',
 }
+FONT_NAME = 'OpenSans-ExtraBold.ttf'
+INST_FONT_NAME = 'OpenSans-Bold.ttf'
 
 
 def download_portrait(monster_no):
@@ -59,12 +61,12 @@ def download_portrait(monster_no):
     print('Downloaded ' + monster_no + '.png')
 
 
-def outline_text(draw, x, y, font, text_color, text):
+def outline_text(draw, x, y, font, text_color, text, thickness=1):
     shadow_color = 'black'
-    draw.text((x - 1, y - 1), text, font=font, fill=shadow_color)
-    draw.text((x + 1, y - 1), text, font=font, fill=shadow_color)
-    draw.text((x - 1, y + 1), text, font=font, fill=shadow_color)
-    draw.text((x + 1, y + 1), text, font=font, fill=shadow_color)
+    draw.text((x - thickness, y - thickness), text, font=font, fill=shadow_color)
+    draw.text((x + thickness, y - thickness), text, font=font, fill=shadow_color)
+    draw.text((x - thickness, y + thickness), text, font=font, fill=shadow_color)
+    draw.text((x + thickness, y + thickness), text, font=font, fill=shadow_color)
     draw.text((x, y), text, font=font, fill=text_color)
 
 
@@ -78,24 +80,24 @@ def combine_portrait(card, show_awakes):
     sum_plus = card['+HP'] + card['+ATK'] + card['+RCV']
     if 0 < sum_plus:
         if sum_plus < 297:
-            font = ImageFont.truetype('arialbd.ttf', 15)
-            outline_text(draw, 5, 5, font, 'yellow', '+{:d} HP'.format(card['+HP']))
-            outline_text(draw, 5, 17, font, 'yellow', '+{:d} ATK'.format(card['+ATK']))
-            outline_text(draw, 5, 29, font, 'yellow', '+{:d} RCV'.format(card['+RCV']))
+            font = ImageFont.truetype(FONT_NAME, 14)
+            outline_text(draw, 5, 2, font, 'yellow', '+{:d} HP'.format(card['+HP']))
+            outline_text(draw, 5, 14, font, 'yellow', '+{:d} ATK'.format(card['+ATK']))
+            outline_text(draw, 5, 26, font, 'yellow', '+{:d} RCV'.format(card['+RCV']))
         else:
-            font = ImageFont.truetype('arialbd.ttf', 20)
-            outline_text(draw, 5, 5, font, 'yellow', '+297')
+            font = ImageFont.truetype(FONT_NAME, 18)
+            outline_text(draw, 5, 0, font, 'yellow', '+297')
     # level
     slv_offset = 80
     if card['LV'] > 0:
-        outline_text(draw, 5, 75, ImageFont.truetype('arialbd.ttf', 20), 'white', 'Lv.{:d}'.format(card['LV']))
-        slv_offset = 60
+        outline_text(draw, 5, 75, ImageFont.truetype(FONT_NAME, 18), 'white', 'Lv.{:d}'.format(card['LV']))
+        slv_offset = 62
     # skill level
     if card['SLV'] > 0:
         outline_text(draw, 5, slv_offset,
-                     ImageFont.truetype('arialbd.ttf', 15), 'pink', 'SLv.{:d}'.format(card['SLV']))
+                     ImageFont.truetype(FONT_NAME, 14), 'pink', 'SLv.{:d}'.format(card['SLV']))
     # ID
-    outline_text(draw, 72, 85, ImageFont.truetype('arialbd.ttf', 10), 'lightblue', str(card['ID']))
+    outline_text(draw, 67, 82, ImageFont.truetype(FONT_NAME, 12), 'lightblue', str(card['ID']))
     del draw
     if show_awakes:
         # awakening
@@ -104,9 +106,9 @@ def combine_portrait(card, show_awakes):
         else:
             awake = Image.open(ASSETS_DIR + 'circle.png')
             draw = ImageDraw.Draw(awake)
-            draw.text((8, 2), str(card['AWAKE']), font=ImageFont.truetype('arialbd.ttf', 25), fill='yellow')
+            draw.text((9, -2), str(card['AWAKE']), font=ImageFont.truetype(FONT_NAME, 24), fill='yellow')
             del draw
-        awake.thumbnail((25, 30), Image.LANCZOS)
+        awake.thumbnail((25, 30), Image.LINEAR)
         portrait.paste(awake, (PORTRAIT_WIDTH-awake.size[0]-5, 5), awake)
         awake.close()
     return portrait
@@ -161,7 +163,7 @@ def filename(name):
 
 
 def text_center_pad(font_size, line_height):
-    return math.floor((line_height - font_size) / 2)
+    return math.floor((line_height - font_size) / 3)
 
 
 def idx_to_xy(idx):
@@ -203,21 +205,22 @@ def generate_build_image(build, include_instructions=False):
             y_offset += LATENTS_WIDTH * 2
 
     if include_instructions:
+        y_offset -= PADDING * 2
         draw = ImageDraw.Draw(build_img)
-        font = ImageFont.truetype('arialbd.ttf', 20)
+        font = ImageFont.truetype(FONT_NAME, 24)
         text_padding = text_center_pad(25, PORTRAIT_WIDTH//2)
         for step in build['Instruction']:
-            x_offset = 0
+            x_offset = PADDING
             outline_text(draw, x_offset, y_offset + text_padding,
-                         font, 'white', 'F{:d}:   P{:d} '.format(step['Floor'], step['Player'] + 1))
-            x_offset += PORTRAIT_WIDTH - PADDING
+                         font, 'white', 'F{:d} - P{:d} '.format(step['Floor'], step['Player'] + 1))
+            x_offset += PORTRAIT_WIDTH
             if step['Active'] is not None:
                 actives_used = [str(build['Team'][idx][ids]['ID'])
                                 for idx, side in enumerate(step['Active'])
                                 for ids in side]
                 for card in actives_used:
                     p_small = Image.open(PORTRAIT_DIR + str(card) + '.png')\
-                        .resize((PORTRAIT_WIDTH//2, PORTRAIT_WIDTH//2), Image.LANCZOS)
+                        .resize((PORTRAIT_WIDTH//2, PORTRAIT_WIDTH//2), Image.LINEAR)
                     build_img.paste(p_small, (x_offset, y_offset))
                     x_offset += PORTRAIT_WIDTH//2
                 x_offset += PADDING
