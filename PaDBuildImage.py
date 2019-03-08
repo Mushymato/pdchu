@@ -117,8 +117,10 @@ def combine_portrait(card, show_awakes):
 def combine_latents(latents):
     if not latents:
         return False
+    if len(latents) > 6:
+        latents = latents[0:6]
     latents_bar = Image.new('RGBA',
-                            (PORTRAIT_WIDTH, PORTRAIT_WIDTH),
+                            (PORTRAIT_WIDTH, LATENTS_WIDTH * 2),
                             (255, 255, 255, 0))
     x_offset = 0
     y_offset = 0
