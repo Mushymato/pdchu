@@ -124,16 +124,20 @@ def combine_latents(latents):
                             (255, 255, 255, 0))
     x_offset = 0
     y_offset = 0
+    row_count = 0
     latents.sort(reverse=True)
     last_height = 0
     for l in latents:
         latent_icon = Image.open(ASSETS_DIR + LATENTS_MAP[l] + '.png')
         if x_offset + latent_icon.size[0] > PORTRAIT_WIDTH:
+            row_count += 1
             x_offset = 0
             y_offset += last_height
         latents_bar.paste(latent_icon, (x_offset, y_offset))
         last_height = latent_icon.size[1]
         x_offset += latent_icon.size[0]
+        if row_count == 1 and x_offset >= LATENTS_WIDTH * 2:
+            break
     return latents_bar
 
 
