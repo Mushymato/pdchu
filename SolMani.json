@@ -1,35 +1,35 @@
 {
-    "Instruction": [
+    "INSTRUCTION": [
         {
-            "Action": "match 5 green",
+            "ACTION": "match 5 green",
             "Active": [
                 [
                     9
                 ],
                 []
             ],
-            "Floor": 1,
-            "Player": 0
+            "FLOOR": 1,
+            "PLAYER": 0
         },
         {
-            "Action": "match 4 green",
+            "ACTION": "match 4 green",
             "Active": null,
-            "Floor": 2,
-            "Player": 1
+            "FLOOR": 2,
+            "PLAYER": 1
         },
         {
-            "Action": "match 3 green",
+            "ACTION": "match 3 green",
             "Active": [
                 [
                     7
                 ],
                 []
             ],
-            "Floor": 3,
-            "Player": 0
+            "FLOOR": 3,
+            "PLAYER": 0
         },
         {
-            "Action": "gravity",
+            "ACTION": "gravity",
             "Active": [
                 [],
                 [
@@ -38,11 +38,11 @@
                     0
                 ]
             ],
-            "Floor": 4,
-            "Player": 1
+            "FLOOR": 4,
+            "PLAYER": 1
         },
         {
-            "Action": "save 6 dark",
+            "ACTION": "save 6 dark",
             "Active": [
                 [],
                 [
@@ -50,11 +50,11 @@
                     5
                 ]
             ],
-            "Floor": 5,
-            "Player": 1
+            "FLOOR": 5,
+            "PLAYER": 1
         },
         {
-            "Action": "gravity",
+            "ACTION": "gravity",
             "Active": [
                 [
                     4,
@@ -63,19 +63,18 @@
                 ],
                 []
             ],
-            "Floor": 6,
-            "Player": 0
+            "FLOOR": 6,
+            "PLAYER": 0
         },
         {
-            "Action": "match 6 dark",
+            "ACTION": "match 6 dark",
             "Active": null,
-            "Floor": 7,
-            "Player": 0
+            "FLOOR": 7,
+            "PLAYER": 0
         }
     ],
-    "Name": "SolMani",
-    "Players": 2,
-    "Team": [
+    "NAME": "SolMani",
+    "TEAM": [
         [
             {
                 "+ATK": 0,
@@ -84,8 +83,8 @@
                 "AWAKE": 9,
                 "ID": 4012,
                 "LATENT": [
-                    0,
-                    0
+                    31,
+                    31
                 ],
                 "LV": 0,
                 "SLV": 0
@@ -107,8 +106,8 @@
                 "AWAKE": 9,
                 "ID": 1713,
                 "LATENT": [
-                    0,
-                    0
+                    31,
+                    31
                 ],
                 "LV": 0,
                 "SLV": 0
@@ -152,8 +151,8 @@
                 "LATENT": [
                     4,
                     4,
-                    0,
-                    0
+                    31,
+                    31
                 ],
                 "LV": 99,
                 "SLV": 0
@@ -201,8 +200,8 @@
                 "AWAKE": 9,
                 "ID": 4012,
                 "LATENT": [
-                    0,
-                    0
+                    31,
+                    31
                 ],
                 "LV": 0,
                 "SLV": 0

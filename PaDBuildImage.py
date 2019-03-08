@@ -152,13 +152,13 @@ def combine_latents(latents):
 
 def generate_instructions(build):
     output = ''
-    for step in build['Instruction']:
-        output += 'F{:d}: P{:d} '.format(step['Floor'], step['Player'])
-        if step['Active'] is not None:
-            output += ' '.join([str(build['Team'][idx][ids]['ID'])
-                                for idx, side in enumerate(step['Active'])
+    for step in build['INSTRUCTION']:
+        output += 'F{:d}: P{:d} '.format(step['FLOOR'], step['Player'])
+        if step['ACTIVE'] is not None:
+            output += ' '.join([str(build['TEAM'][idx][ids]['ID'])
+                                for idx, side in enumerate(step['ACTIVE'])
                                 for ids in side]) + ', '
-        output += step['Action']
+        output += step['ACTION']
         output += '\n'
     return output
 
@@ -186,20 +186,20 @@ def idx_to_xy(idx):
 
 
 def generate_build_image(build, include_instructions=False):
-    p_w = PORTRAIT_WIDTH * math.ceil(len(build['Team'][0]) / 2) + PADDING * math.ceil(len(build['Team'][0]) / 10)
-    p_h = (PORTRAIT_WIDTH + LATENTS_WIDTH + PADDING) * 2 * len(build['Team'])
-    include_instructions &= build['Instruction'] is not None
+    p_w = PORTRAIT_WIDTH * math.ceil(len(build['TEAM'][0]) / 2) + PADDING * math.ceil(len(build['TEAM'][0]) / 10)
+    p_h = (PORTRAIT_WIDTH + LATENTS_WIDTH + PADDING) * 2 * len(build['TEAM'])
+    include_instructions &= build['INSTRUCTION'] is not None
     if include_instructions:
-        p_h += len(build['Instruction']) * (PORTRAIT_WIDTH//2 + PADDING)
+        p_h += len(build['INSTRUCTION']) * (PORTRAIT_WIDTH//2 + PADDING)
     build_img = Image.new('RGBA',
                           (p_w, p_h),
                           (255, 255, 255, 0))
     y_offset = 0
-    for team in build['Team']:
+    for team in build['TEAM']:
         has_assist = False
         has_latents = False
         for idx, card in enumerate(team):
-            if idx > 11 or idx > 9 and len(build['Team']) > 1:
+            if idx > 11 or idx > 9 and len(build['TEAM']) > 1:
                 break
             if card:
                 x, y = idx_to_xy(idx)
@@ -224,14 +224,14 @@ def generate_build_image(build, include_instructions=False):
         draw = ImageDraw.Draw(build_img)
         font = ImageFont.truetype(FONT_NAME, 24)
         text_padding = text_center_pad(25, PORTRAIT_WIDTH//2)
-        for step in build['Instruction']:
+        for step in build['INSTRUCTION']:
             x_offset = PADDING
             outline_text(draw, x_offset, y_offset + text_padding,
-                         font, 'white', 'F{:d} - P{:d} '.format(step['Floor'], step['Player'] + 1))
+                         font, 'white', 'F{:d} - P{:d} '.format(step['FLOOR'], step['Player'] + 1))
             x_offset += PORTRAIT_WIDTH
-            if step['Active'] is not None:
-                actives_used = [str(build['Team'][idx][ids]['ID'])
-                                for idx, side in enumerate(step['Active'])
+            if step['ACTIVE'] is not None:
+                actives_used = [str(build['TEAM'][idx][ids]['ID'])
+                                for idx, side in enumerate(step['ACTIVE'])
                                 for ids in side]
                 for card in actives_used:
                     p_small = Image.open(PORTRAIT_DIR + str(card) + '.png')\
@@ -239,13 +239,13 @@ def generate_build_image(build, include_instructions=False):
                     build_img.paste(p_small, (x_offset, y_offset))
                     x_offset += PORTRAIT_WIDTH//2
                 x_offset += PADDING
-            outline_text(draw, x_offset, y_offset + text_padding, font, 'white', step['Action'])
+            outline_text(draw, x_offset, y_offset + text_padding, font, 'white', step['ACTION'])
             y_offset += PORTRAIT_WIDTH//2
         del draw
 
     build_img = trim(build_img)
 
-    fname = filename(build['Name'])
+    fname = filename(build['NAME'])
     build_img.save(fname + '.png')
     print('Saved ' + fname + '.png')
 

@@ -1,8 +1,7 @@
 {
-    "Instruction": null,
-    "Name": "SAlter A5",
-    "Players": 1,
-    "Team": [
+    "INSTRUCTION": null,
+    "NAME": "SAlter A5",
+    "TEAM": [
         [
             {
                 "+ATK": 99,
@@ -35,12 +34,12 @@
                 "AWAKE": 9,
                 "ID": 3524,
                 "LATENT": [
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
+                    31,
+                    31,
+                    31,
+                    31,
+                    31,
+                    31
                 ],
                 "LV": 99,
                 "SLV": 0
@@ -110,12 +109,12 @@
                 "AWAKE": 9,
                 "ID": 4833,
                 "LATENT": [
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
+                    31,
+                    31,
+                    31,
+                    31,
+                    31,
+                    31
                 ],
                 "LV": 99,
                 "SLV": 0
