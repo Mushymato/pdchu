@@ -57,8 +57,8 @@ def download_portrait(monster_no):
     else:
         p.mkdir()
         print('Created ' + PORTRAIT_DIR)
+    print('Downloading ' + monster_no + '.png')
     urllib.request.urlretrieve(PORTRAIT_URL + monster_no + '.png', PORTRAIT_DIR + monster_no + '.png')
-    print('Downloaded ' + monster_no + '.png')
 
 
 def outline_text(draw, x, y, font, text_color, text, thickness=1):
