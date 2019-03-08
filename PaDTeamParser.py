@@ -71,14 +71,14 @@ class PaDTeamLexer(object):
         return t
 
     def t_P_ATK(self, t):
-        r'\+[aA]\d{1,3}'
-        # AW followed by 1 digit number
+        r'\+[aA]\d{1,2}'
+        # +A followed by 2 digit number
         t.value = int(t.value[2:])
         return t
 
     def t_P_RCV(self, t):
-        r'\+[rR]\d{1,3}'
-        # AW followed by 1 digit number
+        r'\+[rR]\d{1,2}'
+        # +R followed by 2 digit number
         t.value = int(t.value[2:])
         return t
 
