@@ -156,9 +156,9 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print('USAGE: ' + sys.argv[0] + ' <team_str> [--name <build_name>]')
     build_data = {
-        'Name': sys.argv[3] if len(sys.argv) >= 4 and sys.argv[2] == '--name' else 'Nameless Build',
-        'Team': parse_build(sys.argv[1]),
-        'Instruction': None
+        'NAME': sys.argv[3] if len(sys.argv) >= 4 and sys.argv[2] == '--name' else 'Nameless Build',
+        'TEAM': parse_build(sys.argv[1]),
+        'INSTRUCTION': None
     }
     with open(filename(build_data['Name']) + '.json', 'w') as fp:
         json.dump(build_data, fp, indent=4, sort_keys=True)
