@@ -36,6 +36,7 @@ LATENTS_MAP = {
     19: 'gres+',
     20: 'lres+',
     21: 'dres+',
+    # size changes
     22: 'hp',
     23: 'atk',
     24: 'rcv',
@@ -133,9 +134,21 @@ def combine_latents(latents):
     x_offset = 0
     y_offset = 0
     row_count = 0
-    latents.sort()
-    last_height = 0
+    one_slot, two_slot = [], []
     for l in latents:
+        if l < 22:
+            two_slot.append(l)
+        else:
+            one_slot.append(l)
+    sorted_latents = []
+    if len(one_slot) > len(two_slot):
+        sorted_latents.extend(one_slot)
+        sorted_latents.extend(two_slot)
+    else:
+        sorted_latents.extend(two_slot)
+        sorted_latents.extend(one_slot)
+    last_height = 0
+    for l in sorted_latents:
         latent_icon = Image.open(ASSETS_DIR + LATENTS_MAP[l] + '.png')
         if x_offset + latent_icon.size[0] > PORTRAIT_WIDTH:
             row_count += 1

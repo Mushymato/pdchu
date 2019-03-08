@@ -27,13 +27,13 @@ class PaDTeamLexer(object):
         return t
 
     def t_ASSIST(self, t):
-        r'\(.+\)'
+        r'\(.+?\)'
         # words in ()
         t.value = t.value.strip('()')
         return t
 
     def t_LATENT(self, t):
-        r'\[.+\]'
+        r'\[.+?\]'
         # words in []
         t.value = [REVERSE_LATENTS_MAP[l] for l in t.value.strip('[]').split(',')]
         return t
@@ -160,5 +160,5 @@ if __name__ == '__main__':
         'TEAM': parse_build(sys.argv[1]),
         'INSTRUCTION': None
     }
-    with open(filename(build_data['Name']) + '.json', 'w') as fp:
+    with open(filename(build_data['NAME']) + '.json', 'w') as fp:
         json.dump(build_data, fp, indent=4, sort_keys=True)
