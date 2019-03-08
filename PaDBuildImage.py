@@ -15,30 +15,39 @@ PORTRAIT_WIDTH = 100
 PADDING = 10
 LATENTS_WIDTH = 25
 LATENTS_MAP = {
-    0: 'latent_sdr',
-    1: 'killer_balanced',
-    2: 'killer_physical',
-    3: 'killer_healer',
-    4: 'killer_dragon',
-    5: 'killer_god',
-    6: 'killer_attacker',
-    7: 'killer_devil',
-    8: 'killer_machine',
-
-    # 9: 'Vendor',
-    # 10: 'Evo',
-    # 11: 'Enhance',
-    # 12: 'Awakening',
-    # 13: 'HP',
-    # 14: 'Attack',
-    # 15: 'RCV',
-    # 16: 'Autoheal',
-    # 17: 'Fire Resist',
-    # 18: 'Water Resist',
-    # 19: 'Wood Resist',
-    # 20: 'Light Resist',
-    # 21: 'Dark Resist',
+    1: 'bak',
+    2: 'phk',
+    3: 'hek',
+    4: 'drk',
+    5: 'gok',
+    6: 'aak',
+    7: 'dek',
+    8: 'mak',
+    9: 'evk',
+    10: 'rek',
+    11: 'awk',
+    12: 'enk',
+    13: 'all',
+    14: 'hp+',
+    15: 'atk+',
+    16: 'rcv+',
+    17: 'rres+',
+    18: 'bres+',
+    19: 'gres+',
+    20: 'lres+',
+    21: 'dres+',
+    22: 'hp',
+    23: 'atk',
+    24: 'rcv',
+    25: 'rres',
+    26: 'bres',
+    27: 'gres',
+    28: 'lres',
+    29: 'dres',
+    30: 'ah',
+    31: 'sdr'
 }
+REVERSE_LATENTS_MAP = {v: k for k, v in LATENTS_MAP.items()}
 FONT_NAME = 'OpenSans-ExtraBold.ttf'
 INST_FONT_NAME = 'OpenSans-Bold.ttf'
 
@@ -125,7 +134,7 @@ def combine_latents(latents):
     x_offset = 0
     y_offset = 0
     row_count = 0
-    latents.sort(reverse=True)
+    latents.sort()
     last_height = 0
     for l in latents:
         latent_icon = Image.open(ASSETS_DIR + LATENTS_MAP[l] + '.png')

@@ -1,7 +1,7 @@
 from ply import lex
 import sys
 import json
-from PaDBuildImage import filename, LATENTS_MAP
+from PaDBuildImage import filename, REVERSE_LATENTS_MAP
 
 
 class PaDTeamLexer(object):
@@ -35,7 +35,7 @@ class PaDTeamLexer(object):
     def t_LATENT(self, t):
         r'\[.+\]'
         # words in []
-        t.value = map_latents(t.value.strip('[]').split(','))
+        t.value = [REVERSE_LATENTS_MAP[l] for l in t.value.strip('[]').split(',')]
         return t
 
     def t_LV(self, t):
@@ -93,16 +93,6 @@ class PaDTeamLexer(object):
         # pass debug=1 to enable verbose output
         self.lexer = lex.lex(module=self)
         return self.lexer
-
-
-def map_latents(latent_arr):
-    latent_idx = []
-    for latent in latent_arr:
-        for id, lt in LATENTS_MAP.items():
-            if latent in lt or lt in latent:
-                latent_idx.append(id)
-                break
-    return latent_idx
 
 
 def process_card(lexer, card_str, is_assist=False):
