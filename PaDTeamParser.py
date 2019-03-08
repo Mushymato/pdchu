@@ -22,8 +22,6 @@ class PaDTeamLexer(object):
     def t_ID(self, t):
         r'^.+?(?=[\(\|\[])|^(?!.*[\(\|\[].*).+'
         # first word before ( or [ or { or entire word if those characters are not in string
-        if t.value != 'sdr':
-            t.value = int(t.value)
         return t
 
     def t_ASSIST(self, t):
@@ -39,21 +37,21 @@ class PaDTeamLexer(object):
         return t
 
     def t_LV(self, t):
-        r'LV\d{1,3}'
+        r'[lL][vV]\d{1,3}'
         # LV followed by 1~3 digit number
-        t.value = int(t.value.replace('LV', ''))
+        t.value = int(t.value[2:])
         return t
 
     def t_SLV(self, t):
-        r'SLV\d{1,2}'
+        r'[sS][lL][vV]\d{1,2}'
         # SL followed by 1~2 digit number
-        t.value = int(t.value.replace('SLV', ''))
+        t.value = int(t.value[3:])
         return t
 
     def t_AWAKE(self, t):
-        r'AW\d'
+        r'[aA][wW]\d'
         # AW followed by 1 digit number
-        t.value = int(t.value.replace('AW', ''))
+        t.value = int(t.value[2:])
         return t
 
     def t_STATS(self, t):
@@ -61,33 +59,33 @@ class PaDTeamLexer(object):
         return t
 
     def t_P_ALL(self, t):
-        r'\+(0|297)'
+        r'\+\d{1,3}'
         # + followed by 0 or 297
-        t.value = int(t.value.strip('+'))
+        t.value = int(t.value[1:])
         return t
 
     def t_P_HP(self, t):
-        r'\+H\d{1,3}'
+        r'\+[hH]\d{1,3}'
         # +H followed by 3 digit number
-        t.value = int(t.value.replace('+H', ''))
+        t.value = int(t.value[2:])
         return t
 
     def t_P_ATK(self, t):
-        r'\+A\d{1,3}'
+        r'\+[aA]\d{1,3}'
         # AW followed by 1 digit number
-        t.value = int(t.value.replace('+A', ''))
+        t.value = int(t.value[2:])
         return t
 
     def t_P_RCV(self, t):
-        r'\+R\d{1,3}'
+        r'\+[rR]\d{1,3}'
         # AW followed by 1 digit number
-        t.value = int(t.value.replace('+R', ''))
+        t.value = int(t.value[2:])
         return t
 
     t_ignore = ' \t\n'
 
     def t_error(self, t):
-        raise ValueError("Unknown text '%s'" % (t.value,))
+        raise ValueError("Unknown text '{}' at position {}".format(t.value, t.lexpos))
 
     def build(self, **kwargs):
         # pass debug=1 to enable verbose output
