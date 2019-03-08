@@ -10,7 +10,7 @@ from PIL import ImageChops
 
 ASSETS_DIR = './assets/'
 PORTRAIT_URL = 'https://f002.backblazeb2.com/file/miru-data/padimages/jp/portrait/'
-PORTRAIT_DIR = './pad-portrait/'
+PORTRAIT_DIR = './portrait/'
 PORTRAIT_WIDTH = 100
 PADDING = 10
 LATENTS_WIDTH = 25
@@ -48,8 +48,7 @@ LATENTS_MAP = {
     31: 'sdr'
 }
 REVERSE_LATENTS_MAP = {v: k for k, v in LATENTS_MAP.items()}
-FONT_NAME = 'OpenSans-ExtraBold.ttf'
-INST_FONT_NAME = 'OpenSans-Bold.ttf'
+FONT_NAME = ASSETS_DIR + 'OpenSans-ExtraBold.ttf'
 
 
 def download_portrait(monster_no):
@@ -153,7 +152,7 @@ def combine_latents(latents):
 def generate_instructions(build):
     output = ''
     for step in build['INSTRUCTION']:
-        output += 'F{:d}: P{:d} '.format(step['FLOOR'], step['Player'])
+        output += 'F{:d}: P{:d} '.format(step['FLOOR'], step['PLAYER'])
         if step['ACTIVE'] is not None:
             output += ' '.join([str(build['TEAM'][idx][ids]['ID'])
                                 for idx, side in enumerate(step['ACTIVE'])
@@ -227,7 +226,7 @@ def generate_build_image(build, include_instructions=False):
         for step in build['INSTRUCTION']:
             x_offset = PADDING
             outline_text(draw, x_offset, y_offset + text_padding,
-                         font, 'white', 'F{:d} - P{:d} '.format(step['FLOOR'], step['Player'] + 1))
+                         font, 'white', 'F{:d} - P{:d} '.format(step['FLOOR'], step['PLAYER'] + 1))
             x_offset += PORTRAIT_WIDTH
             if step['ACTIVE'] is not None:
                 actives_used = [str(build['TEAM'][idx][ids]['ID'])

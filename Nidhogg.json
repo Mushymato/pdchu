@@ -1,20 +1,20 @@
 {
-    "Instruction": [
+    "INSTRUCTION": [
         {
-            "Action": "SWIPE",
-            "Active": [
+            "ACTION": "SWIPE",
+            "ACTIVE": [
                 [
                     2,
                     5
                 ],
                 []
             ],
-            "Floor": 1,
-            "Player": 0
+            "FLOOR": 1,
+            "PLAYER": 0
         },
         {
-            "Action": "GRAVITY",
-            "Active": [
+            "ACTION": "GRAVITY",
+            "ACTIVE": [
                 [],
                 [
                     1,
@@ -23,30 +23,30 @@
                     7
                 ]
             ],
-            "Floor": 2,
-            "Player": 1
+            "FLOOR": 2,
+            "PLAYER": 1
         },
         {
-            "Action": "SWIPE",
-            "Active": null,
-            "Floor": 3,
-            "Player": 1
+            "ACTION": "SWIPE",
+            "ACTIVE": null,
+            "FLOOR": 3,
+            "PLAYER": 1
         },
         {
-            "Action": "SWIPE",
-            "Active": [
+            "ACTION": "SWIPE",
+            "ACTIVE": [
                 [
                     7,
                     9
                 ],
                 []
             ],
-            "Floor": 4,
-            "Player": 0
+            "FLOOR": 4,
+            "PLAYER": 0
         },
         {
-            "Action": "VDP",
-            "Active": [
+            "ACTION": "VDP",
+            "ACTIVE": [
                 [
                     0
                 ],
@@ -54,13 +54,12 @@
                     9
                 ]
             ],
-            "Floor": 5,
-            "Player": 1
+            "FLOOR": 5,
+            "PLAYER": 1
         }
     ],
-    "Name": "Nidhogg",
-    "Players": 2,
-    "Team": [
+    "NAME": "Nidhogg",
+    "TEAM": [
         [
             {
                 "+ATK": 99,
