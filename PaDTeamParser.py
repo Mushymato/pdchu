@@ -1,6 +1,7 @@
 from ply import lex
 import sys
 import json
+import csv
 from PaDBuildImage import filename, REVERSE_LATENTS_MAP
 
 
@@ -20,7 +21,7 @@ class PaDTeamLexer(object):
     ]
 
     def t_ID(self, t):
-        r'^.+?(?=[\(\|\[])|^(?!.*[\(\|\[].*).+'
+        r'^".+?"|^.+?(?=[\(\|\[])|^(?!.*[\(\|\[].*).+'
         # first word before ( or [ or { or entire word if those characters are not in string
         return t
 
@@ -140,7 +141,7 @@ def process_card(lexer, card_str, is_assist=False):
 
 def parse_build(input_str):
     lexer = PaDTeamLexer().build()
-    team_str_list = [x.split('/') for x in input_str.split(';')]
+    team_str_list = [row for row in csv.reader(input_str.split(';'), delimiter='/', quotechar='"')]
     team_list = []
     for team in team_str_list:
         team_sublist = []
@@ -155,7 +156,8 @@ if __name__ == '__main__':
         print('USAGE: ' + sys.argv[0] + ' <team_str> [--name <build_name>]')
     build_data = {
         'NAME': sys.argv[3] if len(sys.argv) >= 4 and sys.argv[2] == '--name' else 'Nameless Build',
-        'TEAM': parse_build(sys.argv[1]),
+        # 'TEAM': parse_build(sys.argv[1]),
+        'TEAM': parse_build('"l/b yog"/"lxyog(r/x yog)";"d/g kami"/"takami"'),
         'INSTRUCTION': None
     }
     with open(filename(build_data['NAME']) + '.json', 'w') as fp:

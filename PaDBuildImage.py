@@ -10,7 +10,8 @@ from PIL import ImageChops
 
 ASSETS_DIR = './assets/'
 PORTRAIT_URL = 'https://f002.backblazeb2.com/file/miru-data/padimages/jp/portrait/'
-PORTRAIT_DIR = './portrait/'
+# PORTRAIT_DIR = './portrait/'
+PORTRAIT_DIR = 'D:/Apache24/htdocs/wp-content/uploads/pad-portrait/'
 PORTRAIT_WIDTH = 100
 PADDING = 10
 LATENTS_WIDTH = 25
@@ -124,8 +125,6 @@ def combine_portrait(card, show_awakes):
 
 
 def combine_latents(latents):
-    if not latents:
-        return False
     if len(latents) > 6:
         latents = latents[0:6]
     latents_bar = Image.new('RGBA',
@@ -194,7 +193,7 @@ def text_center_pad(font_size, line_height):
 
 
 def idx_to_xy(idx):
-        return idx // 2, (idx + 1) % 2
+    return idx // 2, (idx + 1) % 2
 
 
 def generate_build_image(build, include_instructions=False):
@@ -208,23 +207,19 @@ def generate_build_image(build, include_instructions=False):
                           (255, 255, 255, 0))
     y_offset = 0
     for team in build['TEAM']:
-        has_assist = False
-        has_latents = False
+        has_assist = not any([card is None for idx, card in enumerate(team) if idx % 2 == 1])
+        has_latents = any([card['LATENT'] is not None for idx, card in enumerate(team) if idx % 2 == 0])
         for idx, card in enumerate(team):
             if idx > 11 or idx > 9 and len(build['TEAM']) > 1:
                 break
             if card:
+                portrait = combine_portrait(card, idx % 2 == 0)
                 x, y = idx_to_xy(idx)
-                portrait = combine_portrait(card, y % 2 == 1)
                 x_offset = PADDING * math.ceil(x / 4)
                 build_img.paste(portrait, (x_offset + x * PORTRAIT_WIDTH, y_offset + y * PORTRAIT_WIDTH))
-                if y % 2 == 0:
-                    has_assist = True
-                elif y % 2 == 1:
+                if has_latents and idx % 2 == 0 and card['LATENT'] is not None:
                     latents = combine_latents(card['LATENT'])
-                    if latents:
-                        has_latents = True
-                        build_img.paste(latents, (x_offset + x * PORTRAIT_WIDTH, y_offset + (y + 1) * PORTRAIT_WIDTH))
+                    build_img.paste(latents, (x_offset + x * PORTRAIT_WIDTH, y_offset + (y + 1) * PORTRAIT_WIDTH))
         y_offset += PORTRAIT_WIDTH + PADDING * 2
         if has_assist:
             y_offset += PORTRAIT_WIDTH
