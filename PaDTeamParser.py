@@ -13,10 +13,10 @@ class PaDTeamLexer(object):
         'LV',
         'SLV',
         'AWAKE',
-        'P_ALL',
         'P_HP',
         'P_ATK',
         'P_RCV',
+        'P_ALL',
     ]
 
     def t_ID(self, t):
