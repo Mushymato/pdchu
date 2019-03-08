@@ -21,7 +21,7 @@ class PaDTeamLexer(object):
     ]
 
     def t_ID(self, t):
-        r'^".+?"|^.+?(?=[\(\|\[])|^(?!.*[\(\|\[].*).+'
+        r'^.+?(?=[\(\|\[])|^(?!.*[\(\|\[].*).+'
         # first word before ( or [ or { or entire word if those characters are not in string
         return t
 
