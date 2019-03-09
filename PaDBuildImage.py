@@ -207,7 +207,7 @@ def generate_build_image(build, include_instructions=False):
                           (255, 255, 255, 0))
     y_offset = 0
     for team in build['TEAM']:
-        has_assist = not any([card is None for idx, card in enumerate(team) if idx % 2 == 1])
+        has_assist = any([card is not None for idx, card in enumerate(team) if idx % 2 == 1])
         has_latents = any([card['LATENT'] is not None for idx, card in enumerate(team) if idx % 2 == 0])
         for idx, card in enumerate(team):
             if idx > 11 or idx > 9 and len(build['TEAM']) > 1:

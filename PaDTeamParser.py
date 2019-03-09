@@ -2,7 +2,7 @@ from ply import lex
 import sys
 import json
 import csv
-from PaDBuildImage import filename, REVERSE_LATENTS_MAP
+from PaDBuildImage import filename, REVERSE_LATENTS_MAP, generate_build_image
 
 
 class PaDTeamLexer(object):
@@ -11,6 +11,7 @@ class PaDTeamLexer(object):
         'ASSIST',
         'LATENT',
         'STATS',
+        'SPACES',
         'LV',
         'SLV',
         'AWAKE',
@@ -23,6 +24,7 @@ class PaDTeamLexer(object):
     def t_ID(self, t):
         r'^.+?(?=[\(\|\[])|^(?!.*[\(\|\[].*).+'
         # first word before ( or [ or { or entire word if those characters are not in string
+        t.value = t.value.strip()
         return t
 
     def t_ASSIST(self, t):
@@ -41,6 +43,8 @@ class PaDTeamLexer(object):
         r'[lL][vV]\d{1,3}'
         # LV followed by 1~3 digit number
         t.value = int(t.value[2:])
+        if t.value > 110:
+            t.value = 110
         return t
 
     def t_SLV(self, t):
@@ -57,17 +61,24 @@ class PaDTeamLexer(object):
 
     def t_STATS(self, t):
         r'\|'
-        return t
+        pass
+
+    def t_SPACES(self, t):
+        r'\s'
+        # spaces must be checked after ID
+        pass
 
     def t_P_ALL(self, t):
         r'\+\d{1,3}'
         # + followed by 0 or 297
         t.value = int(t.value[1:])
+        if t.value > 297:
+            t.value = 297
         return t
 
     def t_P_HP(self, t):
-        r'\+[hH]\d{1,3}'
-        # +H followed by 3 digit number
+        r'\+[hH]\d{1,2}'
+        # +H followed by 2 digit number
         t.value = int(t.value[2:])
         return t
 
@@ -83,7 +94,7 @@ class PaDTeamLexer(object):
         t.value = int(t.value[2:])
         return t
 
-    t_ignore = ' \t\n'
+    t_ignore = '\t\n'
 
     def t_error(self, t):
         raise ValueError("Unknown text '{}' at position {}".format(t.value, t.lexpos))
@@ -156,9 +167,9 @@ if __name__ == '__main__':
         print('USAGE: ' + sys.argv[0] + ' <team_str> [--name <build_name>]')
     build_data = {
         'NAME': sys.argv[3] if len(sys.argv) >= 4 and sys.argv[2] == '--name' else 'Nameless Build',
-        # 'TEAM': parse_build(sys.argv[1]),
-        'TEAM': parse_build('"l/b yog"/"lxyog(r/x yog)";"d/g kami"/"takami"'),
+        'TEAM': parse_build(sys.argv[1]),
         'INSTRUCTION': None
     }
     with open(filename(build_data['NAME']) + '.json', 'w') as fp:
         json.dump(build_data, fp, indent=4, sort_keys=True)
+    generate_build_image(build_data, False)
