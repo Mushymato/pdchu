@@ -36,7 +36,8 @@ class PaDTeamLexer(object):
     def t_LATENT(self, t):
         r'\[.+?\]'
         # words in []
-        t.value = [REVERSE_LATENTS_MAP[l] for l in t.value.strip('[]').split(',')]
+        t.value = [l.strip().lower() for l in t.value.strip('[]').split(',')]
+        t.value = [REVERSE_LATENTS_MAP[l] for l in t.value if l in REVERSE_LATENTS_MAP]
         return t
 
     def t_LV(self, t):

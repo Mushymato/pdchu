@@ -80,28 +80,29 @@ def outline_text(draw, x, y, font, text_color, text, thickness=1):
     draw.text((x, y), text, font=font, fill=text_color)
 
 
-def combine_portrait(card, show_awakes):
+def combine_portrait(card, show_stats=True, show_awakes=True):
     if card['ID'] == 'delay_buffer':
         return Image.open(ASSETS_DIR + 'delay_buffer.png')
     download_portrait(card['ID'])
     portrait = Image.open(PORTRAIT_DIR + str(card['ID']) + '.png')
     draw = ImageDraw.Draw(portrait)
-    # + eggs
-    sum_plus = card['+HP'] + card['+ATK'] + card['+RCV']
-    if 0 < sum_plus:
-        if sum_plus < 297:
-            font = ImageFont.truetype(FONT_NAME, 14)
-            outline_text(draw, 5, 2, font, 'yellow', '+{:d} HP'.format(card['+HP']))
-            outline_text(draw, 5, 14, font, 'yellow', '+{:d} ATK'.format(card['+ATK']))
-            outline_text(draw, 5, 26, font, 'yellow', '+{:d} RCV'.format(card['+RCV']))
-        else:
-            font = ImageFont.truetype(FONT_NAME, 18)
-            outline_text(draw, 5, 0, font, 'yellow', '+297')
-    # level
     slv_offset = 80
-    if card['LV'] > 0:
-        outline_text(draw, 5, 75, ImageFont.truetype(FONT_NAME, 18), 'white', 'Lv.{:d}'.format(card['LV']))
-        slv_offset = 62
+    if show_stats:
+        # + eggs
+        sum_plus = card['+HP'] + card['+ATK'] + card['+RCV']
+        if 0 < sum_plus:
+            if sum_plus < 297:
+                font = ImageFont.truetype(FONT_NAME, 14)
+                outline_text(draw, 5, 2, font, 'yellow', '+{:d} HP'.format(card['+HP']))
+                outline_text(draw, 5, 14, font, 'yellow', '+{:d} ATK'.format(card['+ATK']))
+                outline_text(draw, 5, 26, font, 'yellow', '+{:d} RCV'.format(card['+RCV']))
+            else:
+                font = ImageFont.truetype(FONT_NAME, 18)
+                outline_text(draw, 5, 0, font, 'yellow', '+297')
+        # level
+        if card['LV'] > 0:
+            outline_text(draw, 5, 75, ImageFont.truetype(FONT_NAME, 18), 'white', 'Lv.{:d}'.format(card['LV']))
+            slv_offset = 62
     # skill level
     if card['SLV'] > 0:
         outline_text(draw, 5, slv_offset,
@@ -193,7 +194,7 @@ def text_center_pad(font_size, line_height):
 
 
 def idx_to_xy(idx):
-    return idx // 2, (idx + 1) % 2
+    return idx // 2, - (idx % 2)
 
 
 def generate_build_image(build, include_instructions=False):
@@ -209,20 +210,22 @@ def generate_build_image(build, include_instructions=False):
     for team in build['TEAM']:
         has_assist = any([card is not None for idx, card in enumerate(team) if idx % 2 == 1])
         has_latents = any([card['LATENT'] is not None for idx, card in enumerate(team) if idx % 2 == 0])
+        if has_assist:
+            y_offset += PORTRAIT_WIDTH
         for idx, card in enumerate(team):
             if idx > 11 or idx > 9 and len(build['TEAM']) > 1:
                 break
             if card:
-                portrait = combine_portrait(card, idx % 2 == 0)
+                portrait = combine_portrait(card, show_awakes=idx % 2 == 0)  # on color check?
                 x, y = idx_to_xy(idx)
                 x_offset = PADDING * math.ceil(x / 4)
                 build_img.paste(portrait, (x_offset + x * PORTRAIT_WIDTH, y_offset + y * PORTRAIT_WIDTH))
                 if has_latents and idx % 2 == 0 and card['LATENT'] is not None:
                     latents = combine_latents(card['LATENT'])
                     build_img.paste(latents, (x_offset + x * PORTRAIT_WIDTH, y_offset + (y + 1) * PORTRAIT_WIDTH))
+                    latents.close()
+                portrait.close()
         y_offset += PORTRAIT_WIDTH + PADDING * 2
-        if has_assist:
-            y_offset += PORTRAIT_WIDTH
         if has_latents:
             y_offset += LATENTS_WIDTH * 2
 
